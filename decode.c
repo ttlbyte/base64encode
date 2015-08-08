@@ -31,7 +31,7 @@ void main(int argc, char* argv[]) {
     }
     if (argv[1][4*i-2]=='=') s[3*i-2] = '\0';
     if (argv[1][4*i-1]=='=') s[3*i-1] = '\0';
-    printf("The original text is %s\n",s);
+    printf("%s\n",s);
 }
 
 void decode_base64(char* unit,char* out)
