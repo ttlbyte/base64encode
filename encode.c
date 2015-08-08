@@ -11,7 +11,7 @@ void main(int argc, char* argv[])
 {
     if (argc!=2)
     {
-        printf ("Usage:./encode string\n");
+        printf ("Usage:%s string\n",argv[0]);
         return;
     }
     int _length = 0;
