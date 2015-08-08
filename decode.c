@@ -2,10 +2,11 @@
 #include <malloc.h>
 #include <string.h>
 
-char inttochar(int* a);
-void chartoint(char x,int* a);
+char bittochar(int* a);
+void inttobit(int x,int* a);
 int bth(int x);
 void decode_base64(char* unit,char* out);
+void base64tab(char c, int* b);
 
 void main(int argc, char* argv[]) {
     if (argc!=2)
@@ -36,9 +37,37 @@ void main(int argc, char* argv[]) {
 void decode_base64(char* unit,char* out)
 {
     int* total = (int*)malloc(sizeof(int)*24);
-    
+    int i = 0;
+    int j = 0;
+    for (;i<4;i++)
+    {
+        base64tab(unit[i],total+6*i);
+    }
+    for (;j<3;j++)
+    out[j] = bittochar(total+8*j);
 }
-
+void base64tab(char c, int* b)
+{
+    int tmp = 0;
+    int* middle = (int*)malloc(sizeof(int)*8);
+    if ((c>='A')&&(c<='Z'))
+    tmp = (c - 'A');
+    else if ((c>='a')&&(c<='z'))
+    tmp = (c - 'a') + 26;
+    else if ((c>='0')&&(c<='9'))
+    tmp = (c - '0') + 52;
+    else if (c=='+')
+    tmp = 62;
+    else if (c=='/')
+    tmp = 63;
+    else if (c=='=')
+    tmp = 0;
+    inttobit(tmp,middle);
+    for (int j=0;j<6;j++)
+    {
+        b[j]=middle[j+2];
+    }
+}
 int bth(int x)
 {
     int sum = 1;
@@ -50,20 +79,18 @@ int bth(int x)
     }
     return sum;
 }
-void chartoint(char x, int* a)
+void inttobit(int x, int* a)
 {
     a[0]=a[1]=a[2]=a[3]=a[4]=a[5]=a[6]=a[7]=0;
-    int m;
     int i = 0;
-    m = (x);
-    while(m)
+    while(x)
     {
-        a[7-i]=m%2;
-        m/=2;
+        a[7-i]=x%2;
+        x/=2;
         i++;
     }
 }
-char inttochar(int* a) //convert 8 bits int to char
+char bittochar(int* a) //convert 8 bits int to char
 {
     int sum0 = 0;
     char sum = '\0';
@@ -72,14 +99,6 @@ char inttochar(int* a) //convert 8 bits int to char
         if(a[n])
         sum0 += bth(n);
     }
-    if(sum0 <= 25)
-    sum = (sum0 + 'A');
-    else if (sum0 <= 51)
-    sum = (sum0 - 26 + 'a');
-    else if (sum0 <= 61)
-    sum = (sum0 -52 +'0');
-    else if (sum0 == 62)
-    sum = '+';
-    else sum = '/';
+    sum = (sum0);
     return sum;
 }
