@@ -14,23 +14,34 @@ void main(int argc, char* argv[]) {
         printf ("Usage:%s string\n",argv[0]);
         return;
     }
-    char* s = (char*)malloc(sizeof(char)*1000);
+    char* s = (char*)malloc(sizeof(char)*9999);
+	char* s1 = (char*)malloc(sizeof(char)*9999);
     char* tmp = (char*)malloc(sizeof(char)*4);
     int i = 0;
     int j = 0;
+	while(argv[1][i]!='\0')
+	{
+		if (argv[1][i]!='\n')
+			s1[j]=argv[1][i];
+		else
+			i++;
+		i++;
+		j++;
+	}
+	s1[j]='\0';
     int _length = 0;
-    _length = strlen(argv[1]);
+    _length = strlen(s1);
     i = _length / 4;
-    for (;j<i;j++)
+    for (j=0;j<i;j++)
     {
-        tmp[0] = argv[1][4*j];
-        tmp[1] = argv[1][4*j+1];
-        tmp[2] = argv[1][4*j+2];
-        tmp[3] = argv[1][4*j+3];
+        tmp[0] = s1[4*j];
+        tmp[1] = s1[4*j+1];
+        tmp[2] = s1[4*j+2];
+        tmp[3] = s1[4*j+3];
         decode_base64(tmp,s+3*j);
     }
-    if (argv[1][4*i-2]=='=') s[3*i-2] = '\0';
-    if (argv[1][4*i-1]=='=') s[3*i-1] = '\0';
+    if (s1[4*i-2]=='=') s[3*i-2] = '\0';
+    if (s1[4*i-1]=='=') s[3*i-1] = '\0';
     printf("%s\n",s);
 }
 
