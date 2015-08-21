@@ -36,7 +36,17 @@ void main(int argc, char* argv[])
     encode_base64(tmp,s+4*i);
     if (j!=0)  s[4*(i+1)-1] = '=';
     if (j==1)  s[4*(i+1)-2] = '=';
-    printf("%s\n", s);
+	for(i=0,j=0;s[i]!='\0';i++,j++)
+	{
+		printf("%c",s[i]);
+		if(j==75)
+		{
+			printf("\n");
+			j=-1;
+		}
+	}
+	printf("\n");
+
 }
 
 char inttochar(int* a) //convert 8 bits int to char
